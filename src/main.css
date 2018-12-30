@@ -1,0 +1,13 @@
+body {
+	margin: 0;
+	background-color: navy;
+}
+
+h1 {
+	color: white;
+	display: flex;
+	justify-content: center;
+	text-shadow: 0 0 20px white;
+	font-family: Inconsolata;
+	font-weight: 100;
+}
