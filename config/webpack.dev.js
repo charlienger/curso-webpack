@@ -1,5 +1,7 @@
 const path = require("path")
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 
 const devMode = process.env.MODE_ENV !== 'production'
 
@@ -16,10 +18,25 @@ module.exports = {
 	devServer: {
 		contentBase: "dist"
 	},
+	optimization: {
+		minimizer: [
+			new UglifyJsPlugin({
+				cache: true,
+				parallel: true,
+				sourceMap: true, // set to true if you want JS source maps
+				uglifyOptions: {
+					compress: {
+						warnings: false,
+						drop_console: true
+					}
+				}
+			}),
+			new OptimizeCSSAssetsPlugin({})
+		]
+	},	
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: devMode ? "[name].css" : "[name].[hash].css",
-			chunkFilename: devMode ? "[id].css" : "[name].[hash].css"
+			filename: "[name].css"
 		})
 	],
 	module: {
@@ -30,7 +47,7 @@ module.exports = {
 			{
 				test: /\.(sa|sc|c)ss$/,
 				use: [
-					devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+					MiniCssExtractPlugin.loader,
 					"css-loader",
 					{
 						loader: "postcss-loader",
