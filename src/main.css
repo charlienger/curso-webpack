@@ -3,7 +3,7 @@ body {
 	background-color: navy;
 }
 
-header > .title {
+h1 {
 	color: white;
 	display: flex;
 	justify-content: center;
