@@ -1,8 +1,9 @@
 const path = require("path")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
 	entry: {
-		main: "./src/index.js"
+		main: "./src/index"
 	},
 	mode: "development",
 	output: {
@@ -13,17 +14,26 @@ module.exports = {
 	devServer: {
 		contentBase: "dist"
 	},
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: "[name].css"
+		})
+	],
 	module: {
 		rules: [
 			{
-				test: /\.css$/,
+				test: /\.(sa|sc|c)ss$/,
 				use: [
+					// "style-loader",
+					MiniCssExtractPlugin.loader,
+					"css-loader",
 					{
-						loader: "style-loader"
+						loader: "postcss-loader",
+						options: {
+							plugins: [require("autoprefixer")]
+						}
 					},
-					{
-						loader: "css-loader"
-					}
+					"sass-loader"
 				]
 			}
 		]
